@@ -3,11 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Random Memes</title>
+    <title>Random Word</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+
     <style>
       * {
         box-sizing: border-box;
@@ -17,7 +19,6 @@
 
       :root {
         --container-width: min(90%, 500px);
-        --meme-container-width: min(90%, 800px);
         --padding-large: clamp(20px, 5vw, 40px);
         --padding-medium: clamp(15px, 3vw, 30px);
         --font-size-h1: clamp(1.5rem, 5vw, 2.5rem);
@@ -100,7 +101,7 @@
         transform: translateX(0);
       }
 
-      #memePage {
+      #wordPage {
         position: absolute;
         top: 0;
         left: 0;
@@ -173,19 +174,19 @@
         }
       }
 
-      #memeContainer {
-        width: var(--meme-container-width);
+      #wordContainer {
+        width: var(--container-width);
         margin: 0 auto;
         display: flex;
         flex-direction: column;
         align-items: center;
+        text-align: center;
       }
 
-      #expandedMeme {
-        width: 100%;
-        height: auto;
-        border-radius: 15px;
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      #currentWord {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 20px;
       }
 
       #backButton {
@@ -265,29 +266,32 @@
 
     <div id="generatorPage" class="page">
       <div class="container">
-        <h1>Random Memes</h1>
+        <h1>Random Word</h1>
         <input type="text" id="name" placeholder="Enter your name" />
-        <button onclick="generateMeme()">Generate Meme</button>
+        <button onclick="generateWord()">Generate Word</button>
       </div>
     </div>
 
-    <div id="memePage" class="page">
+    <div id="wordPage" class="page">
       <button id="backButton" onclick="goBack()">← Back</button>
-      <div id="memeContainer">
-        <img id="expandedMeme" src="" alt="Generated Meme" />
+      <div id="wordContainer">
+        <div id="currentWord"></div>
       </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
     <script>
-      const memes = [
-        "https://u.cubeupload.com/flashscrap/salimkumar.gif",
-        "https://media.tenor.com/c01aviy9onUAAAAM/dance-gif.gif",
-        "https://media.tenor.com/LTfU2sOWou4AAAAM/sarkasam-sarcasm.gif",
-        "https://media.tenor.com/0rnHDZgsokMAAAAM/dance-suresh-gopi.gif",
+      const words = [
+        "Purushu ene anugrahikanam",
+        "I am the sorry aliyaa, I am the sorry",
+        "Chetta korch chor idate",
+        "Java simple aanu powerfulaanu",
+        "Bhudhiyanu sire ivante main",
+        "Kerri vaada makkaleeee",
       ];
 
       let isGenerating = false;
+      let currentWordIndex = 0;
 
       function createNebula() {
         const background = document.querySelector(".nebula-background");
@@ -325,15 +329,15 @@
         });
       }
 
-      function hashNameToMemeIndex(name) {
+      function hashNameToWordIndex(name) {
         let hash = 0;
         for (let i = 0; i < name.length; i++) {
-          hash = (hash + name.charCodeAt(i) * i) % memes.length;
+          hash = (hash + name.charCodeAt(i) * i) % words.length;
         }
         return hash;
       }
 
-      async function generateMeme() {
+      async function generateWord() {
         if (isGenerating) return;
 
         const name = document.getElementById("name").value.trim().toLowerCase();
@@ -349,39 +353,24 @@
         isGenerating = true;
         document.getElementById("loadingIndicator").style.display = "block";
 
-        let nameMemeMap = JSON.parse(localStorage.getItem("nameMemeMap")) || {};
-        let memeUrl = nameMemeMap[name] || memes[hashNameToMemeIndex(name)];
+        currentWordIndex = hashNameToWordIndex(name);
+        const currentWord = words[currentWordIndex];
+        document.getElementById("currentWord").textContent = currentWord;
 
-        if (!nameMemeMap[name]) {
-          nameMemeMap[name] = memeUrl;
-          localStorage.setItem("nameMemeMap", JSON.stringify(nameMemeMap));
-        }
-
-        const expandedMeme = document.getElementById("expandedMeme");
-
-        // Preload image
-        await new Promise((resolve, reject) => {
-          const img = new Image();
-          img.onload = resolve;
-          img.onerror = reject;
-          img.src = memeUrl;
-        }).catch((error) => console.error("Error loading image:", error));
-
-        expandedMeme.src = memeUrl;
         document.getElementById("loadingIndicator").style.display = "none";
         isGenerating = false;
 
-        showMemePage();
+        showWordPage();
       }
 
-      function showMemePage() {
+      function showWordPage() {
         gsap.to("#generatorPage", {
           xPercent: -100,
           duration: 0.5,
           ease: "power2.inOut",
         });
 
-        gsap.to("#memePage", {
+        gsap.to("#wordPage", {
           xPercent: -100,
           duration: 0.5,
           ease: "power2.inOut",
@@ -395,7 +384,7 @@
           ease: "power2.inOut",
         });
 
-        gsap.to("#memePage", {
+        gsap.to("#wordPage", {
           xPercent: 0,
           duration: 0.5,
           ease: "power2.inOut",
