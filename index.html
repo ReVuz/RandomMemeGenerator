@@ -119,6 +119,8 @@
         border: 1px solid rgba(255, 255, 255, 0.18);
         width: var(--container-width);
         text-align: center;
+        max-width: 500px; /* Limit the maximum width */
+        margin: 0 auto; /* Center the container */
       }
 
       h1 {
@@ -166,6 +168,7 @@
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         width: 100%;
         max-width: 200px;
+        margin-top: 10px; /* Added space between buttons */
       }
 
       @media (hover: hover) {
@@ -272,58 +275,83 @@
         backdrop-filter: blur(5px);
         justify-content: center;
         align-items: center;
+        padding: var(--padding-medium);
       }
 
       .modal-content {
-        background-color: #222;
-        padding: var(--padding-large);
-        border-radius: 10px;
+        background: rgba(34, 34, 34, 0.95);
+        padding: clamp(20px, 5vw, 40px);
+        border-radius: 20px;
         text-align: center;
         width: 90%;
         max-width: 500px;
+        max-height: 90vh;
+        overflow-y: auto;
         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
         border: 1px solid rgba(255, 255, 255, 0.18);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
 
       .modal h2 {
-        margin-bottom: var(--padding-medium);
-        font-size: 2rem;
+        margin-bottom: clamp(15px, 3vw, 25px);
+        font-size: clamp(1.5rem, 5vw, 2rem);
         font-weight: 600;
-        color: white;
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        background: linear-gradient(45deg, #7928ca, #ff0080);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: none;
       }
 
       .modal p {
         color: #ccc;
-        font-size: 1.2rem;
-        margin-bottom: var(--padding-large);
+        font-size: clamp(1rem, 2.5vw, 1.2rem);
+        margin-bottom: clamp(20px, 4vw, 30px);
+        line-height: 1.6;
       }
 
       .close-modal {
-        padding: var(--padding-medium);
-        background: linear-gradient(45deg, #ff0080, #7928ca);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        font-size: var(--font-size-regular);
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        width: 100%;
-        max-width: 200px;
-        margin-top: 20px;
+        padding: clamp(12px, 2.5vw, 20px);
+        font-size: clamp(0.9rem, 2vw, 1.1rem);
+        margin: 0 auto;
       }
 
-      @media (hover: hover) {
-        .close-modal:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      /* Additional responsive adjustments */
+      @media (max-width: 480px) {
+        .modal-content {
+          padding: 20px;
+        }
+
+        .close-modal {
+          width: 100%;
+          max-width: none;
         }
       }
 
-      /* Styles for the "How to Play" button in the generator page */
-      #generatorPage button {
-        margin-bottom: 20px; /* Add some space between buttons */
+      @media (max-height: 600px) {
+        .modal-content {
+          max-height: 85vh;
+        }
+      }
+
+      /* Improved scrollbar for modal content */
+      .modal-content::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .modal-content::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+      }
+
+      .modal-content::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 4px;
+      }
+
+      .modal-content::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.4);
       }
     </style>
   </head>
@@ -352,14 +380,18 @@
     <div id="modal" class="modal">
       <div class="modal-content">
         <h2>How to Play</h2>
+        <p>Welcome to the Connect Quest! Here's how to play:</p>
         <p>
           Enter your name and click "Generate Word" to receive a random word.
           You will be teamed up with others who get the same word!
         </p>
+        <p>
+          Each name generates a specific word. Try different names for different
+          results!
+        </p>
         <button class="close-modal" onclick="closeModal()">Got it!</button>
       </div>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
     <script>
       // Existing code from code 2
@@ -453,7 +485,7 @@
         });
 
         gsap.to("#wordPage", {
-          xPercent: -100,
+          xPercent: 0,
           duration: 0.5,
           ease: "power2.inOut",
         });
@@ -467,7 +499,7 @@
         });
 
         gsap.to("#wordPage", {
-          xPercent: 0,
+          xPercent: 100,
           duration: 0.5,
           ease: "power2.inOut",
         });
