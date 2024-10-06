@@ -3,57 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Random Word</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
-
+    <title>Random Word Generator - Login</title>
     <style>
-      /* Combined styles from both codes */
       * {
-        box-sizing: border-box;
         margin: 0;
         padding: 0;
-      }
-
-      :root {
-        --container-width: min(90%, 500px);
-        --padding-large: clamp(20px, 5vw, 40px);
-        --padding-medium: clamp(15px, 3vw, 30px);
-        --font-size-h1: clamp(1.5rem, 5vw, 2.5rem);
-        --font-size-regular: clamp(0.9rem, 2vw, 1.2rem);
+        box-sizing: border-box;
       }
 
       body {
-        font-family: "Poppins", sans-serif;
-        color: white;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        background: linear-gradient(45deg, #000000, #240c0c);
+        display: flex;
+        justify-content: center;
+        align-items: center;
         overflow-x: hidden;
         position: relative;
-        background: #0a0a0a;
-        min-height: 100vh;
-        min-height: 100dvh;
       }
 
-      .nebula-background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-        overflow: hidden;
-      }
-
-      .nebula {
-        position: absolute;
-        border-radius: 50%;
-        filter: blur(60px);
-        opacity: 0.3;
-        mix-blend-mode: screen;
-      }
-
+      /* Starry background */
       .stars {
         position: fixed;
         top: 0;
@@ -61,507 +30,249 @@
         width: 100%;
         height: 100%;
         pointer-events: none;
-        background: radial-gradient(
-            2px 2px at 40px 60px,
-            #fff,
-            rgba(0, 0, 0, 0)
-          ),
-          radial-gradient(2px 2px at 20px 50px, #fff, rgba(0, 0, 0, 0)),
-          radial-gradient(2px 2px at 30px 100px, #fff, rgba(0, 0, 0, 0));
-        background-repeat: repeat;
-        background-size: 200px 200px;
-        animation: twinkle 4s ease-in-out infinite;
-        opacity: 0.5;
-        z-index: 1;
+        z-index: 0;
+      }
+
+      .star {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        animation: twinkle var(--duration) infinite;
+        opacity: 0;
       }
 
       @keyframes twinkle {
         0%,
         100% {
-          opacity: 0.5;
+          opacity: 0;
         }
         50% {
-          opacity: 0.8;
+          opacity: 1;
         }
-      }
-
-      .page {
-        min-height: 100vh;
-        min-height: 100dvh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: var(--padding-large);
-        position: relative;
-        z-index: 2;
-        transition: transform 0.5s ease-in-out;
-      }
-
-      #generatorPage {
-        transform: translateX(0);
-      }
-
-      #wordPage {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        transform: translateX(100%);
       }
 
       .container {
-        background: rgba(255, 255, 255, 0.05);
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        padding: 2.5rem;
+        background: rgba(255, 255, 255, 0.1);
         backdrop-filter: blur(10px);
         border-radius: 20px;
-        padding: var(--padding-large);
         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
         border: 1px solid rgba(255, 255, 255, 0.18);
-        width: var(--container-width);
-        text-align: center;
-        max-width: 500px; /* Limit the maximum width */
-        margin: 0 auto; /* Center the container */
+        max-width: 500px;
+        width: 90%;
+        margin: 20px;
       }
 
       h1 {
-        margin-bottom: var(--padding-medium);
-        font-size: var(--font-size-h1);
-        font-weight: 600;
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+        color: #fff;
         text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        opacity: 0;
         line-height: 1.2;
       }
 
-      input[type="text"] {
-        padding: var(--padding-medium);
+      .input-group {
+        margin: 2rem 0;
+      }
+
+      input {
         width: 100%;
-        border: none;
-        border-radius: 10px;
-        font-size: var(--font-size-regular);
-        margin-bottom: var(--padding-medium);
+        max-width: 300px;
+        padding: 1rem 1.5rem;
+        font-size: 1.1rem;
         background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
         color: white;
         transition: all 0.3s ease;
-        opacity: 0;
       }
 
-      input[type="text"]::placeholder {
-        color: rgba(255, 255, 255, 0.7);
+      input::placeholder {
+        color: rgba(255, 255, 255, 0.6);
       }
 
-      input[type="text"]:focus {
+      input:focus {
         outline: none;
-        background: rgba(255, 255, 255, 0.2);
-        box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
       }
 
       button {
-        padding: var(--padding-medium);
-        background: linear-gradient(45deg, #7928ca, #ff0080);
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        background: rgba(255, 255, 255, 0.1);
         color: white;
-        border: none;
+        border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 10px;
         cursor: pointer;
-        font-size: var(--font-size-regular);
         transition: all 0.3s ease;
-        opacity: 0;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        width: 100%;
-        max-width: 200px;
-        margin-top: 10px; /* Added space between buttons */
-      }
-
-      @media (hover: hover) {
-        button:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-      }
-
-      #wordContainer {
-        width: var(--container-width);
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-      }
-
-      #currentWord {
-        font-size: 2rem;
-        font-weight: bold;
-        margin-bottom: 20px;
-      }
-
-      #backButton {
-        position: fixed;
-        top: var(--padding-medium);
-        left: var(--padding-medium);
-        background: rgba(255, 255, 255, 0.1);
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        z-index: 10;
-        max-width: none;
-        width: auto;
-      }
-
-      @media (hover: hover) {
-        #backButton:hover {
-          background: rgba(255, 255, 255, 0.2);
-        }
-      }
-
-      /* Responsive adjustments */
-      @media (max-height: 600px) {
-        .page {
-          padding: var(--padding-medium);
-        }
-
-        .container {
-          padding: var(--padding-medium);
-        }
-      }
-
-      @media (max-width: 380px) {
-        input[type="text"] {
-          font-size: 16px; /* Prevents zoom on iOS */
-        }
-      }
-
-      /* Loading indicator */
-      .loading-indicator {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
-      }
-
-      .loading-indicator::after {
-        content: "";
-        display: block;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        border: 3px solid #fff;
-        border-color: #fff transparent #fff transparent;
-        animation: loader 1.2s linear infinite;
-      }
-
-      @keyframes loader {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-
-      /* Modal styles */
-      .modal {
-        display: none;
-        position: fixed;
-        z-index: 10;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.8);
         backdrop-filter: blur(5px);
-        justify-content: center;
-        align-items: center;
-        padding: var(--padding-medium);
+        margin-top: 1rem;
       }
 
-      .modal-content {
-        background: rgba(34, 34, 34, 0.95);
-        padding: clamp(20px, 5vw, 40px);
-        border-radius: 20px;
-        text-align: center;
-        width: 90%;
-        max-width: 500px;
-        max-height: 90vh;
-        overflow-y: auto;
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+      button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
       }
 
-      .modal h2 {
-        margin-bottom: clamp(15px, 3vw, 25px);
-        font-size: clamp(1.5rem, 5vw, 2rem);
-        font-weight: 600;
-        background: linear-gradient(45deg, #7928ca, #ff0080);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-shadow: none;
+      .error {
+        color: #ff6b6b;
+        margin-top: 1rem;
+        padding: 0.8rem 1.2rem;
+        background: rgba(255, 107, 107, 0.1);
+        border-radius: 8px;
+        display: none;
+        animation: fadeIn 0.3s ease;
       }
 
-      .modal p {
-        color: #ccc;
-        font-size: clamp(1rem, 2.5vw, 1.2rem);
-        margin-bottom: clamp(20px, 4vw, 30px);
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .welcome-text {
+        color: #e0e0e0;
+        margin: 2rem 0;
         line-height: 1.6;
       }
 
-      .close-modal {
-        padding: clamp(12px, 2.5vw, 20px);
-        font-size: clamp(0.9rem, 2vw, 1.1rem);
-        margin: 0 auto;
-      }
-
-      /* Additional responsive adjustments */
-      @media (max-width: 480px) {
-        .modal-content {
-          padding: 20px;
+      @media screen and (max-width: 600px) {
+        h1 {
+          font-size: 2rem;
         }
-
-        .close-modal {
-          width: 100%;
-          max-width: none;
+        .container {
+          padding: 1.5rem;
+        }
+        input {
+          font-size: 1rem;
+          padding: 0.8rem 1.2rem;
+        }
+        button {
+          padding: 0.8rem 1.5rem;
         }
       }
 
-      @media (max-height: 600px) {
-        .modal-content {
-          max-height: 85vh;
+      @media screen and (max-width: 400px) {
+        h1 {
+          font-size: 1.8rem;
         }
-      }
-
-      /* Improved scrollbar for modal content */
-      .modal-content::-webkit-scrollbar {
-        width: 8px;
-      }
-
-      .modal-content::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 4px;
-      }
-
-      .modal-content::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.3);
-        border-radius: 4px;
-      }
-
-      .modal-content::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.4);
+        .welcome-text {
+          font-size: 0.9rem;
+        }
       }
     </style>
   </head>
   <body>
-    <div class="nebula-background"></div>
     <div class="stars"></div>
-    <div class="loading-indicator" id="loadingIndicator"></div>
-
-    <div id="generatorPage" class="page">
-      <div class="container">
-        <h1>Random Word</h1>
-        <input type="text" id="name" placeholder="Enter your name" />
-        <button onclick="openModal()">How to Play</button>
-        <button onclick="generateWord()">Generate Word</button>
+    <div class="container">
+      <h1>Random Word Generator</h1>
+      <p class="welcome-text">
+        Enter your name to receive your unique random word. Each person gets
+        their own special word that no one else will have!
+      </p>
+      <div class="input-group">
+        <input
+          type="text"
+          id="nameInput"
+          placeholder="Enter your name"
+          required
+          autocomplete="off"
+        />
       </div>
+      <p id="errorMessage" class="error">This name has already been used.</p>
+      <button onclick="startGame()">Get Your Word</button>
     </div>
 
-    <div id="wordPage" class="page">
-      <button id="backButton" onclick="goBack()">← Back</button>
-      <div id="wordContainer">
-        <div id="currentWord"></div>
-      </div>
-    </div>
-
-    <!-- Modal -->
-    <div id="modal" class="modal">
-      <div class="modal-content">
-        <h2>How to Play</h2>
-        <p>Welcome to the Connect Quest! Here's how to play:</p>
-        <p>
-          Enter your name and click "Generate Word" to receive a random word.
-          You will be teamed up with others who get the same word!
-        </p>
-        <p>
-          Each name generates a specific word. Try different names for different
-          results!
-        </p>
-        <button class="close-modal" onclick="closeModal()">Got it!</button>
-      </div>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
     <script>
-      // Existing code from code 2
-      const words = [
-        "Purushu ene anugrahikanam",
-        "I am the sorry aliyaa, I am the sorry",
-        "Chetta korch chor idate",
-        "Java simple aanu powerfulaanu",
-        "Bhudhiyanu sire ivante main",
-        "Kerri vaada makkaleeee",
-      ];
+      // Create starry background
+      function createStars() {
+        const starsContainer = document.querySelector(".stars");
+        const numberOfStars = 200;
 
-      let isGenerating = false;
-      let currentWordIndex = 0;
+        for (let i = 0; i < numberOfStars; i++) {
+          const star = document.createElement("div");
+          star.className = "star";
 
-      function createNebula() {
-        const background = document.querySelector(".nebula-background");
-        const colors = ["#7928ca", "#ff0080", "#0070f3", "#00dfd8"];
-        const nebulaCount = window.innerWidth < 600 ? 4 : 6;
+          // Random position
+          const x = Math.random() * 100;
+          const y = Math.random() * 100;
 
-        for (let i = 0; i < nebulaCount; i++) {
-          const nebula = document.createElement("div");
-          nebula.className = "nebula";
+          // Random size
+          const size = Math.random() * 2;
 
-          const size = Math.random() * 300 + 100;
-          nebula.style.width = `${size}px`;
-          nebula.style.height = `${size}px`;
-          nebula.style.background =
-            colors[Math.floor(Math.random() * colors.length)];
+          // Random duration
+          const duration = 2 + Math.random() * 4;
 
-          gsap.set(nebula, {
-            x: Math.random() * window.innerWidth,
-            y: Math.random() * window.innerHeight,
-          });
+          star.style.cssText = `
+                    left: ${x}%;
+                    top: ${y}%;
+                    width: ${size}px;
+                    height: ${size}px;
+                    --duration: ${duration}s;
+                `;
 
-          background.appendChild(nebula);
-          animateNebula(nebula);
+          starsContainer.appendChild(star);
         }
       }
 
-      function animateNebula(element) {
-        gsap.to(element, {
-          x: `+=${Math.random() * 200 - 100}`,
-          y: `+=${Math.random() * 200 - 100}`,
-          scale: Math.random() * 0.5 + 0.5,
-          duration: Math.random() * 10 + 10,
-          ease: "sine.inOut",
-          onComplete: () => animateNebula(element),
-        });
-      }
+      // Create stars when page loads
+      window.onload = createStars;
 
-      function hashNameToWordIndex(name) {
-        let hash = 0;
-        for (let i = 0; i < name.length; i++) {
-          hash = (hash + name.charCodeAt(i) * i) % words.length;
-        }
-        return hash;
-      }
+      function startGame() {
+        const nameInput = document.getElementById("nameInput");
+        const name = nameInput.value.trim();
+        const errorMessage = document.getElementById("errorMessage");
 
-      async function generateWord() {
-        if (isGenerating) return;
-
-        const name = document.getElementById("name").value.trim().toLowerCase();
         if (name === "") {
-          gsap.to("input", {
-            x: [-10, 10, -10, 10, 0],
-            duration: 0.4,
-            ease: "power2.inOut",
-          });
+          errorMessage.innerText = "Please enter your name";
+          errorMessage.style.display = "block";
           return;
         }
 
-        isGenerating = true;
-        document.getElementById("loadingIndicator").style.display = "block";
+        // Check if this name already has a word assigned
+        const usedWords = JSON.parse(localStorage.getItem("usedWords") || "{}");
 
-        currentWordIndex = hashNameToWordIndex(name);
-        const currentWord = words[currentWordIndex];
-        document.getElementById("currentWord").textContent = currentWord;
-
-        document.getElementById("loadingIndicator").style.display = "none";
-        isGenerating = false;
-
-        showWordPage();
-      }
-
-      function showWordPage() {
-        gsap.to("#generatorPage", {
-          xPercent: -100,
-          duration: 0.5,
-          ease: "power2.inOut",
-        });
-
-        gsap.to("#wordPage", {
-          xPercent: 0,
-          duration: 0.5,
-          ease: "power2.inOut",
-        });
-      }
-
-      function goBack() {
-        gsap.to("#generatorPage", {
-          xPercent: 0,
-          duration: 0.5,
-          ease: "power2.inOut",
-        });
-
-        gsap.to("#wordPage", {
-          xPercent: 100,
-          duration: 0.5,
-          ease: "power2.inOut",
-        });
-      }
-
-      // Initialize animations
-      document.addEventListener("DOMContentLoaded", () => {
-        createNebula();
-
-        gsap.to(".container", {
-          opacity: 1,
-          y: 0,
-          duration: 1.5,
-          ease: "power2.out",
-        });
-
-        gsap.to("h1", {
-          opacity: 1,
-          duration: 1,
-          delay: 0.5,
-        });
-
-        gsap.to("input", {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          delay: 1,
-        });
-
-        gsap.to("button", {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          delay: 1.2,
-        });
-      });
-
-      // Handle viewport height on mobile
-      function updateVH() {
-        let vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty("--vh", `${vh}px`);
-      }
-
-      window.addEventListener("resize", updateVH);
-      updateVH();
-
-      // Modal open/close functions (from code 1)
-      function openModal() {
-        document.getElementById("modal").style.display = "flex";
-      }
-
-      function closeModal() {
-        document.getElementById("modal").style.display = "none";
-      }
-
-      // Close modal if clicking outside the content
-      window.onclick = function (event) {
-        const modal = document.getElementById("modal");
-        if (event.target == modal) {
-          closeModal();
+        if (usedWords[name]) {
+          errorMessage.innerText =
+            "This name has already been used. Please try a different name.";
+          errorMessage.style.display = "block";
+          return;
         }
-      };
+
+        localStorage.setItem("userName", name);
+        window.location.href = "game.html";
+      }
+
+      // Add enter key support
+      document
+        .getElementById("nameInput")
+        .addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            startGame();
+          }
+        });
+
+      // Hide error message when input changes
+      document
+        .getElementById("nameInput")
+        .addEventListener("input", function () {
+          document.getElementById("errorMessage").style.display = "none";
+        });
+
+      // Add focus to input field when page loads
+      window.addEventListener("load", function () {
+        document.getElementById("nameInput").focus();
+      });
     </script>
   </body>
 </html>

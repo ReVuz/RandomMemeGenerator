@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Random Word Generator</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        background: linear-gradient(45deg, #000000, #240c0c);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      /* Starry background */
+      .stars {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .star {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        animation: twinkle var(--duration) infinite;
+        opacity: 0;
+      }
+
+      @keyframes twinkle {
+        0%,
+        100% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      .container {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        max-width: 600px;
+        width: 90%;
+        margin: 20px;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: #fff;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: #e0e0e0;
+      }
+
+      .word-box {
+        font-size: 2.5rem;
+        color: #fff;
+        margin: 2rem 0;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        transition: transform 0.3s ease;
+      }
+
+      .word-box:hover {
+        transform: scale(1.05);
+      }
+
+      .button-group {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin: 2rem 0;
+      }
+
+      button {
+        padding: 0.8rem 1.5rem;
+        font-size: 1.1rem;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+      }
+
+      button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      .how-to-play {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        text-align: left;
+        color: #e0e0e0;
+      }
+
+      .how-to-play h2 {
+        color: #fff;
+        margin-bottom: 1rem;
+      }
+
+      .how-to-play p {
+        margin-bottom: 0.8rem;
+        line-height: 1.6;
+      }
+
+      @media screen and (max-width: 600px) {
+        h1 {
+          font-size: 2rem;
+        }
+        h2 {
+          font-size: 1.2rem;
+        }
+        .word-box {
+          font-size: 2rem;
+          padding: 1rem;
+        }
+        .container {
+          padding: 1.5rem;
+        }
+      }
+
+      @media screen and (max-width: 400px) {
+        h1 {
+          font-size: 1.8rem;
+        }
+        .word-box {
+          font-size: 1.8rem;
+        }
+        .button-group {
+          flex-direction: column;
+        }
+        button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stars"></div>
+    <div class="container">
+      <h1>Your Random Word</h1>
+      <h2 id="welcomeMessage">Welcome!</h2>
+      <div class="word-box" id="wordBox">Loading your word...</div>
+
+      <div class="button-group">
+        <button onclick="logout()">Logout</button>
+      </div>
+
+      <div class="how-to-play">
+        <h2>How It Works</h2>
+        <p>
+          1. This is your unique random word - it will remain the same each time
+          you log in.
+        </p>
+        <p>
+          2. Each user gets their own unique word that no one else will receive.
+        </p>
+        <p>3. Click "Logout" to return to the login page.</p>
+      </div>
+    </div>
+
+    <script>
+      // Create starry background
+      function createStars() {
+        const starsContainer = document.querySelector(".stars");
+        const numberOfStars = 200;
+
+        for (let i = 0; i < numberOfStars; i++) {
+          const star = document.createElement("div");
+          star.className = "star";
+
+          // Random position
+          const x = Math.random() * 100;
+          const y = Math.random() * 100;
+
+          // Random size
+          const size = Math.random() * 2;
+
+          // Random duration
+          const duration = 2 + Math.random() * 4;
+
+          star.style.cssText = `
+                    left: ${x}%;
+                    top: ${y}%;
+                    width: ${size}px;
+                    height: ${size}px;
+                    --duration: ${duration}s;
+                `;
+
+          starsContainer.appendChild(star);
+        }
+      }
+
+      window.onload = function () {
+        // Create starry background
+        createStars();
+
+        // Define the word list
+        const wordList = [
+          "apple",
+          "banana",
+          "orange",
+          "grape",
+          "cherry",
+          "pear",
+          "mango",
+          "peach",
+          "watermelon",
+          "plum",
+        ];
+
+        // Get the current user's name
+        const userName = localStorage.getItem("userName");
+
+        // If no user name, redirect to login
+        if (!userName) {
+          window.location.href = "index.html";
+          return;
+        }
+
+        // Update welcome message
+        document.getElementById(
+          "welcomeMessage"
+        ).innerText = `Welcome, ${userName}!`;
+
+        // Get or create the used words object
+        let usedWords = {};
+        try {
+          usedWords = JSON.parse(localStorage.getItem("usedWords") || "{}");
+        } catch (e) {
+          console.error("Error parsing usedWords:", e);
+          usedWords = {};
+        }
+
+        // Get or assign a word for this user
+        let userWord = usedWords[userName];
+
+        if (!userWord) {
+          // Get list of already used words
+          const usedWordsList = Object.values(usedWords);
+
+          // Filter out used words to get available words
+          const availableWords = wordList.filter(
+            (word) => !usedWordsList.includes(word)
+          );
+
+          if (availableWords.length > 0) {
+            // Assign a random available word to the user
+            const randomIndex = Math.floor(
+              Math.random() * availableWords.length
+            );
+            userWord = availableWords[randomIndex];
+
+            // Save the word assignment
+            usedWords[userName] = userWord;
+            localStorage.setItem("usedWords", JSON.stringify(usedWords));
+          } else {
+            userWord = "Sorry, no more words available!";
+          }
+        }
+
+        // Display the word with a fade-in effect
+        const wordBox = document.getElementById("wordBox");
+        wordBox.style.opacity = "0";
+        wordBox.innerText = userWord;
+        setTimeout(() => {
+          wordBox.style.transition = "opacity 1s ease";
+          wordBox.style.opacity = "1";
+        }, 100);
+      };
+
+      function logout() {
+        localStorage.removeItem("userName");
+        window.location.href = "index.html";
+      }
+    </script>
+  </body>
+</html>
