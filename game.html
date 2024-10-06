@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Random Word Generator</title>
+    <title>Connect Quest</title>
     <style>
       * {
         margin: 0;
@@ -127,6 +127,7 @@
         border-radius: 15px;
         text-align: left;
         color: #e0e0e0;
+        display: none; /* Initially hidden */
       }
 
       .how-to-play h2 {
@@ -139,6 +140,7 @@
         line-height: 1.6;
       }
 
+      /* Media Queries for Responsiveness */
       @media screen and (max-width: 600px) {
         h1 {
           font-size: 2rem;
@@ -153,6 +155,14 @@
         .container {
           padding: 1.5rem;
         }
+        .button-group {
+          flex-direction: column;
+          align-items: center; /* Center buttons vertically */
+        }
+        button {
+          width: 100%;
+          margin-bottom: 1rem; /* Add space between buttons */
+        }
       }
 
       @media screen and (max-width: 400px) {
@@ -162,31 +172,26 @@
         .word-box {
           font-size: 1.8rem;
         }
-        .button-group {
-          flex-direction: column;
-        }
-        button {
-          width: 100%;
-        }
       }
     </style>
   </head>
   <body>
     <div class="stars"></div>
     <div class="container">
-      <h1>Your Random Word</h1>
+      <h1>Your Word</h1>
       <h2 id="welcomeMessage">Welcome!</h2>
       <div class="word-box" id="wordBox">Loading your word...</div>
 
       <div class="button-group">
         <button onclick="logout()">Logout</button>
+        <button onclick="showHowToPlay()">How to Play</button>
       </div>
 
       <div class="how-to-play">
         <h2>How It Works</h2>
         <p>
-          1. This is your unique random word - it will remain the same each time
-          you log in.
+          1. This is your unique word - it will remain the same each time you
+          log in.
         </p>
         <p>
           2. Each user gets their own unique word that no one else will receive.
@@ -304,6 +309,10 @@
           wordBox.style.opacity = "1";
         }, 100);
       };
+      function showHowToPlay() {
+        const howToPlaySection = document.querySelector(".how-to-play");
+        howToPlaySection.style.display = "block";
+      }
 
       function logout() {
         localStorage.removeItem("userName");
