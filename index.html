@@ -242,12 +242,12 @@
         // Check if this name already has a word assigned
         const usedWords = JSON.parse(localStorage.getItem("usedWords") || "{}");
 
-        if (usedWords[name]) {
-          errorMessage.innerText =
-            "This name has already been used. Please try a different name.";
-          errorMessage.style.display = "block";
-          return;
-        }
+        // if (usedWords[name]) {
+        //   errorMessage.innerText =
+        //     "This name has already been used. Please try a different name.";
+        //   errorMessage.style.display = "block";
+        //   return;
+        // }
 
         localStorage.setItem("userName", name);
         window.location.href = "game.html";
