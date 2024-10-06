@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Connect Quest</title>
+    <title>Connect Quest: The Meme Edition</title>
     <style>
       * {
         margin: 0;
@@ -12,7 +12,7 @@
       }
 
       body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-family: "Comic Sans MS", cursive, sans-serif;
         min-height: 100vh;
         background: linear-gradient(45deg, #000000, #240c0c);
         display: flex;
@@ -20,35 +20,6 @@
         align-items: center;
         overflow-x: hidden;
         position: relative;
-      }
-
-      /* Starry background */
-      .stars {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 0;
-      }
-
-      .star {
-        position: absolute;
-        background: white;
-        border-radius: 50%;
-        animation: twinkle var(--duration) infinite;
-        opacity: 0;
-      }
-
-      @keyframes twinkle {
-        0%,
-        100% {
-          opacity: 0;
-        }
-        50% {
-          opacity: 1;
-        }
       }
 
       .container {
@@ -73,10 +44,12 @@
         text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
       }
 
-      h2 {
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
-        color: #e0e0e0;
+      .epic-subtitle {
+        font-size: 1.2rem;
+        color: #ff69b4;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
       }
 
       .word-box {
@@ -90,34 +63,58 @@
         text-transform: uppercase;
         letter-spacing: 2px;
         transition: transform 0.3s ease;
+        cursor: pointer;
       }
 
       .word-box:hover {
         transform: scale(1.05);
+        animation: rainbow 3s infinite;
       }
 
-      .button-group {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        margin: 2rem 0;
+      @keyframes rainbow {
+        0% {
+          color: red;
+        }
+        20% {
+          color: yellow;
+        }
+        40% {
+          color: lime;
+        }
+        60% {
+          color: cyan;
+        }
+        80% {
+          color: magenta;
+        }
+        100% {
+          color: red;
+        }
       }
 
-      button {
+      .connection-info {
+        color: #e0e0e0;
+        margin-top: 1rem;
+        font-size: 1.1rem;
+      }
+
+      .meme-button {
         padding: 0.8rem 1.5rem;
         font-size: 1.1rem;
         background: rgba(255, 255, 255, 0.1);
         color: white;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 3px solid #ff69b4;
         border-radius: 10px;
         cursor: pointer;
         transition: all 0.3s ease;
-        backdrop-filter: blur(5px);
+        margin: 0.5rem;
+        font-weight: bold;
+        text-transform: uppercase;
       }
 
-      button:hover {
-        background: rgba(255, 255, 255, 0.2);
-        transform: translateY(-2px);
+      .meme-button:hover {
+        background: #ff69b4;
+        transform: translateY(-2px) rotate(3deg);
       }
 
       .how-to-play {
@@ -125,199 +122,107 @@
         padding: 1.5rem;
         background: rgba(255, 255, 255, 0.05);
         border-radius: 15px;
-        text-align: left;
+        text-align: center;
         color: #e0e0e0;
-        display: none; /* Initially hidden */
+        display: none;
       }
 
-      .how-to-play h2 {
-        color: #fff;
-        margin-bottom: 1rem;
+      .meme-step {
+        margin: 1rem 0;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
-      .how-to-play p {
-        margin-bottom: 0.8rem;
-        line-height: 1.6;
-      }
-
-      /* Media Queries for Responsiveness */
-      @media screen and (max-width: 600px) {
-        h1 {
-          font-size: 2rem;
-        }
-        h2 {
-          font-size: 1.2rem;
-        }
-        .word-box {
-          font-size: 2rem;
-          padding: 1rem;
-        }
-        .container {
-          padding: 1.5rem;
-        }
-        .button-group {
-          flex-direction: column;
-          align-items: center; /* Center buttons vertically */
-        }
-        button {
-          width: 100%;
-          margin-bottom: 1rem; /* Add space between buttons */
-        }
-      }
-
-      @media screen and (max-width: 400px) {
-        h1 {
-          font-size: 1.8rem;
-        }
-        .word-box {
-          font-size: 1.8rem;
-        }
+      .meme-emoji {
+        font-size: 1.5rem;
+        margin-right: 0.5rem;
       }
     </style>
   </head>
   <body>
     <div class="stars"></div>
     <div class="container">
-      <h1>Your Word</h1>
-      <h2 id="welcomeMessage">Welcome!</h2>
-      <div class="word-box" id="wordBox">Loading your word...</div>
+      <h1>👾 Connect Quest 👾</h1>
+      <div class="epic-subtitle" id="welcomeMessage">
+        Your Epic Journey Awaits!
+      </div>
 
-      <div class="button-group">
-        <button onclick="logout()">Logout</button>
-        <button onclick="showHowToPlay()">How to Play</button>
+      <div class="word-box" id="wordBox">Loading your legendary word...</div>
+
+      <div class="connection-info" id="connectionInfo">
+        Ready to make some epic connections!
+      </div>
+
+      <div>
+        <!-- <button class="meme-button" onclick="generateNewWord()">
+          New Word
+        </button> -->
+        <button class="meme-button" onclick="showHowToPlay()">
+          Quest Guide
+        </button>
       </div>
 
       <div class="how-to-play">
-        <h2>How It Works</h2>
-        <p>
-          1. This is your unique word - it will remain the same each time you
-          log in.
-        </p>
-        <p>
-          2. Each user gets their own unique word that no one else will receive.
-        </p>
-        <p>3. Click "Logout" to return to the login page.</p>
+        <h2>🎮 Quest Objectives 🎮</h2>
+        <div class="meme-step">
+          <span class="meme-emoji">🎲</span>
+          <span>You've been given a legendary word!</span>
+        </div>
+        <div class="meme-step">
+          <span class="meme-emoji">🗣️</span>
+          <span>Share it with fellow humans IRL</span>
+        </div>
+        <div class="meme-step">
+          <span class="meme-emoji">✨</span>
+          <span>Match = Instant friendship unlocked!</span>
+        </div>
+        <div class="meme-step">
+          <span class="meme-emoji">🤝</span>
+          <span>No match? Still a new friend! Win-win!</span>
+        </div>
       </div>
     </div>
 
     <script>
-      // Create starry background
-      function createStars() {
-        const starsContainer = document.querySelector(".stars");
-        const numberOfStars = 200;
+      // Word list for generation
+      const words = [
+        "apple",
+        "banana",
+        "orange",
+        "grape",
+        "cherry",
+        "pear",
+        "mango",
+        "peach",
+        "watermelon",
+        "plum",
+      ];
 
-        for (let i = 0; i < numberOfStars; i++) {
-          const star = document.createElement("div");
-          star.className = "star";
+      // Function to generate a random word
+      function generateNewWord() {
+        const wordBox = document.getElementById("wordBox");
+        const randomIndex = Math.floor(Math.random() * words.length);
+        wordBox.textContent = words[randomIndex];
+        // Ensure word is removed from the list
+        words.splice(randomIndex, 1);
 
-          // Random position
-          const x = Math.random() * 100;
-          const y = Math.random() * 100;
-
-          // Random size
-          const size = Math.random() * 2;
-
-          // Random duration
-          const duration = 2 + Math.random() * 4;
-
-          star.style.cssText = `
-                    left: ${x}%;
-                    top: ${y}%;
-                    width: ${size}px;
-                    height: ${size}px;
-                    --duration: ${duration}s;
-                `;
-
-          starsContainer.appendChild(star);
-        }
+        // Add some flair with a quick animation
+        wordBox.style.transform = "scale(1.1)";
+        setTimeout(() => {
+          wordBox.style.transform = "scale(1)";
+        }, 200);
       }
 
-      window.onload = function () {
-        // Create starry background
-        createStars();
-
-        // Define the word list
-        const wordList = [
-          "apple",
-          "banana",
-          "orange",
-          "grape",
-          "cherry",
-          "pear",
-          "mango",
-          "peach",
-          "watermelon",
-          "plum",
-        ];
-
-        // Get the current user's name
-        const userName = localStorage.getItem("userName");
-
-        // If no user name, redirect to login
-        if (!userName) {
-          window.location.href = "index.html";
-          return;
-        }
-
-        // Update welcome message
-        document.getElementById(
-          "welcomeMessage"
-        ).innerText = `Welcome, ${userName}!`;
-
-        // Get or create the used words object
-        let usedWords = {};
-        try {
-          usedWords = JSON.parse(localStorage.getItem("usedWords") || "{}");
-        } catch (e) {
-          console.error("Error parsing usedWords:", e);
-          usedWords = {};
-        }
-
-        // Get or assign a word for this user
-        let userWord = usedWords[userName];
-
-        if (!userWord) {
-          // Get list of already used words
-          const usedWordsList = Object.values(usedWords);
-
-          // Filter out used words to get available words
-          const availableWords = wordList.filter(
-            (word) => !usedWordsList.includes(word)
-          );
-
-          if (availableWords.length > 0) {
-            // Assign a random available word to the user
-            const randomIndex = Math.floor(
-              Math.random() * availableWords.length
-            );
-            userWord = availableWords[randomIndex];
-
-            // Save the word assignment
-            usedWords[userName] = userWord;
-            localStorage.setItem("usedWords", JSON.stringify(usedWords));
-          } else {
-            userWord = "Sorry, no more words available!";
-          }
-        }
-
-        // Display the word with a fade-in effect
-        const wordBox = document.getElementById("wordBox");
-        wordBox.style.opacity = "0";
-        wordBox.innerText = userWord;
-        setTimeout(() => {
-          wordBox.style.transition = "opacity 1s ease";
-          wordBox.style.opacity = "1";
-        }, 100);
-      };
       function showHowToPlay() {
         const howToPlaySection = document.querySelector(".how-to-play");
-        howToPlaySection.style.display = "block";
+        howToPlaySection.style.display =
+          howToPlaySection.style.display === "block" ? "none" : "block";
       }
 
-      function logout() {
-        localStorage.removeItem("userName");
-        window.location.href = "index.html";
-      }
+      // Generate initial word on page load
+      window.onload = generateNewWord;
     </script>
   </body>
 </html>

@@ -12,7 +12,7 @@
       }
 
       body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-family: "Comic Sans MS", cursive, sans-serif;
         min-height: 100vh;
         background: linear-gradient(45deg, #000000, #240c0c);
         display: flex;
@@ -22,7 +22,7 @@
         position: relative;
       }
 
-      /* Starry background */
+      /* Starry background remains the same */
       .stars {
         position: fixed;
         top: 0;
@@ -68,14 +68,29 @@
 
       h1 {
         font-size: 2.5rem;
-        margin-bottom: 1.5rem;
+        margin-bottom: 0.5rem;
         color: #fff;
         text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        line-height: 1.2;
       }
 
-      .input-group {
+      .epic-subtitle {
+        font-size: 1.2rem;
+        color: #ff69b4;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      .welcome-text {
+        color: #e0e0e0;
+        margin: 1.5rem 0;
+        line-height: 1.6;
+        font-size: 1.1rem;
+      }
+
+      .input-container {
         margin: 2rem 0;
+        position: relative;
       }
 
       input {
@@ -84,10 +99,11 @@
         padding: 1rem 1.5rem;
         font-size: 1.1rem;
         background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 2px solid #ff69b4;
         border-radius: 10px;
         color: white;
         transition: all 0.3s ease;
+        font-family: "Comic Sans MS", cursive, sans-serif;
       }
 
       input::placeholder {
@@ -96,27 +112,27 @@
 
       input:focus {
         outline: none;
-        background: rgba(255, 255, 255, 0.15);
-        border-color: rgba(255, 255, 255, 0.3);
-        box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        border-color: #ff69b4;
+        box-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
       }
 
-      button {
+      .meme-button {
         padding: 1rem 2rem;
         font-size: 1.1rem;
         background: rgba(255, 255, 255, 0.1);
         color: white;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 3px solid #ff69b4;
         border-radius: 10px;
         cursor: pointer;
         transition: all 0.3s ease;
-        backdrop-filter: blur(5px);
-        margin-top: 1rem;
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        font-weight: bold;
+        text-transform: uppercase;
       }
 
-      button:hover {
-        background: rgba(255, 255, 255, 0.2);
-        transform: translateY(-2px);
+      .meme-button:hover {
+        background: #ff69b4;
+        transform: translateY(-2px) rotate(3deg);
       }
 
       .error {
@@ -126,26 +142,23 @@
         background: rgba(255, 107, 107, 0.1);
         border-radius: 8px;
         display: none;
-        animation: fadeIn 0.3s ease;
+        animation: shakeError 0.5s ease;
       }
 
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(-10px);
+      @keyframes shakeError {
+        0%,
+        100% {
+          transform: translateX(0);
         }
-        to {
-          opacity: 1;
-          transform: translateY(0);
+        25% {
+          transform: translateX(-10px);
+        }
+        75% {
+          transform: translateX(10px);
         }
       }
 
-      .welcome-text {
-        color: #e0e0e0;
-        margin: 2rem 0;
-        line-height: 1.6;
-      }
-
+      /* Responsive styles remain the same */
       @media screen and (max-width: 600px) {
         h1 {
           font-size: 2rem;
@@ -157,7 +170,7 @@
           font-size: 1rem;
           padding: 0.8rem 1.2rem;
         }
-        button {
+        .meme-button {
           padding: 0.8rem 1.5rem;
         }
       }
@@ -175,22 +188,24 @@
   <body>
     <div class="stars"></div>
     <div class="container">
-      <h1>Connect Quest</h1>
+      <h1>👾 Connect Quest 👾</h1>
+      <div class="epic-subtitle">Begin Your Legend</div>
       <p class="welcome-text">
-        Enter your name to receive your unique word. Each person gets their own
-        special word that no one else will have!
+        🎮 Enter your name to receive a legendary word!<br />
+        🤝 Use it to find your people IRL<br />
+        ✨ Make connections, unlock achievements!
       </p>
-      <div class="input-group">
+      <div class="input-container">
         <input
           type="text"
           id="nameInput"
-          placeholder="Enter your name"
+          placeholder="Enter your player name"
           required
           autocomplete="off"
         />
       </div>
-      <p id="errorMessage" class="error">This name has already been used.</p>
-      <button onclick="startGame()">Get Your Word</button>
+      <p id="errorMessage" class="error">Error 404: Name not found</p>
+      <button class="meme-button" onclick="startGame()">Start Quest</button>
     </div>
 
     <script>
@@ -202,30 +217,23 @@
         for (let i = 0; i < numberOfStars; i++) {
           const star = document.createElement("div");
           star.className = "star";
-
-          // Random position
           const x = Math.random() * 100;
           const y = Math.random() * 100;
-
-          // Random size
           const size = Math.random() * 2;
-
-          // Random duration
           const duration = 2 + Math.random() * 4;
 
           star.style.cssText = `
-                    left: ${x}%;
-                    top: ${y}%;
-                    width: ${size}px;
-                    height: ${size}px;
-                    --duration: ${duration}s;
-                `;
+            left: ${x}%;
+            top: ${y}%;
+            width: ${size}px;
+            height: ${size}px;
+            --duration: ${duration}s;
+          `;
 
           starsContainer.appendChild(star);
         }
       }
 
-      // Create stars when page loads
       window.onload = createStars;
 
       function startGame() {
@@ -234,26 +242,16 @@
         const errorMessage = document.getElementById("errorMessage");
 
         if (name === "") {
-          errorMessage.innerText = "Please enter your name";
+          errorMessage.innerText = "❌ Player Name Required to Start Quest! ❌";
           errorMessage.style.display = "block";
           return;
         }
-
-        // Check if this name already has a word assigned
-        const usedWords = JSON.parse(localStorage.getItem("usedWords") || "{}");
-
-        // if (usedWords[name]) {
-        //   errorMessage.innerText =
-        //     "This name has already been used. Please try a different name.";
-        //   errorMessage.style.display = "block";
-        //   return;
-        // }
 
         localStorage.setItem("userName", name);
         window.location.href = "game.html";
       }
 
-      // Add enter key support
+      // Event listeners remain the same
       document
         .getElementById("nameInput")
         .addEventListener("keypress", function (e) {
@@ -262,14 +260,12 @@
           }
         });
 
-      // Hide error message when input changes
       document
         .getElementById("nameInput")
         .addEventListener("input", function () {
           document.getElementById("errorMessage").style.display = "none";
         });
 
-      // Add focus to input field when page loads
       window.addEventListener("load", function () {
         document.getElementById("nameInput").focus();
       });
